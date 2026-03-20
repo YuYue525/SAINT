@@ -1,6 +1,21 @@
-# SAINT: Self-Supervised Tabular Transformer
+# SAINT: Self-Attention and Intersample Attention Transformer
 
-基于 SAINT (Self-Supervised Attention-based Tabular Transformer) 模型的表格型数据自监督学习框架，用于生成高质量的样本 embedding，支持后续聚类分析和黑产挖掘。
+基于 SAINT (Self-Attention and Intersample Attention Transformer) 模型的表格型数据自监督学习框架，用于生成高质量的样本 embedding，支持后续聚类分析和黑产挖掘。
+
+## 核心特性
+
+### 1. 列间自注意力 (Intrasample / Feature-wise Attention)
+在单条样本内部，让不同特征之间通过注意力交互，捕捉特征间高阶关系。
+
+### 2. 行间注意力 (Intersample / Row-wise Attention)
+在小批量内，不同样本之间也做注意力，使某个样本可以"参考"相近样本的信息。
+
+### 3. 改进的连续特征嵌入
+通过可学习的参数，更好地将数值特征与离散特征统一在同一嵌入空间内。
+
+### 4. 对比自监督预训练
+- 对表格样本进行扰动（随机掩码、值替换）构造"同一行的不同视图"
+- 使用对比损失让同一行的不同视图在嵌入空间中靠近，不同样本远离
 
 ## 功能特性
 

@@ -9,7 +9,7 @@ from tqdm import tqdm
 import numpy as np
 
 from data_loader import SAINTDataLoader
-from saint_model import SAINT, NTXentLoss
+from saint_model import SAINT, NTXentLoss, augment_batch_with_mask
 
 
 def set_seed(seed=42):
@@ -23,10 +23,8 @@ def set_seed(seed=42):
 
 def augment_batch(batch):
     """对批次数据进行增强（用于对比学习）"""
-    # 这里可以添加特征级别的增强
-    # 比如对数值特征添加噪声，对类别特征随机掩码等
-    # 简单版本：返回两个相同的批次（后期可以改进）
-    return batch, batch
+    # 使用 SAINT 论文中的样本扰动方法：随机掩码和值替换
+    return augment_batch_with_mask(batch, mask_prob=0.3, replace_prob=0.3)
 
 
 def train_epoch(model, train_loader, criterion, optimizer, device, temperature):

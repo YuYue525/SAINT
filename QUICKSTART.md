@@ -2,7 +2,22 @@
 
 ## 项目概览
 
-这是一个基于 **SAINT (Self-Supervised Attention-based Tabular Transformer)** 的表格型数据自监督学习框架，专为黑产挖掘设计！
+这是一个基于 **SAINT (Self-Attention and Intersample Attention Transformer)** 的表格型数据 embedding 构建方案，专为黑产挖掘设计！
+
+## 核心特性
+
+### 1. 列间自注意力 (Intrasample / Feature-wise Attention)
+在单条样本内部，让不同特征之间通过注意力交互，捕捉特征间高阶关系。
+
+### 2. 行间注意力 (Intersample / Row-wise Attention)
+在小批量内，不同样本之间也做注意力，使某个样本可以"参考"相近样本的信息。
+
+### 3. 改进的连续特征嵌入
+通过可学习的参数，更好地将数值特征与离散特征统一在同一嵌入空间内。
+
+### 4. 对比自监督预训练
+- 对表格样本进行扰动（随机掩码、值替换）构造"同一行的不同视图"
+- 使用对比损失让同一行的不同视图在嵌入空间中靠近，不同样本远离
 
 ## 快速开始
 
@@ -86,12 +101,31 @@ features:
 2. **数值型特征**：float 类型，如开机时间、电池电量等
 3. **布尔型特征**：string 类型，值为 `'true'`/`'false'`/`'null'`
 
+## SAINT 架构详解
+
+### 模型结构
+```
+输入特征 → 特征嵌入 → [列注意力 + 行注意力] × N层 → 均值池化 → 输出embedding
+```
+
+### 注意力机制
+- **列注意力**：让特征之间互相"看见"，捕捉特征关联
+- **行注意力**：让样本之间互相"参考"，利用相似样本信息
+
+### 对比学习
+- 对同一行进行两次不同的扰动（掩码 + 值替换）
+- 让两个视图的 embedding 靠近，不同行的 embedding 远离
+
 ## 黑产挖掘流程
 
 1. **自监督预训练**：使用 SAINT 对大量无标签数据进行对比学习
 2. **生成 Embeddings**：用训练好的模型将表格数据转换为高维向量
 3. **聚类分析**：通过 K-Means 或 DBSCAN 发现异常聚类
 4. **人工审核**：对小聚类进行重点分析，识别黑产样本
+
+## 引用
+
+SAINT: Improved Neural Networks for Tabular Data via Row Attention and Contrastive Pre-Training
 
 ## GitHub 仓库
 
