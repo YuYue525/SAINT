@@ -1,0 +1,40 @@
+# SAINT 模型配置
+model:
+  embedding_dim: 32
+  depth: 6
+  heads: 8
+  dropout: 0.1
+  mlp_dim: 128
+
+# 训练配置
+training:
+  batch_size: 256
+  lr: 0.0001
+  weight_decay: 0.01
+  epochs: 100
+  temperature: 0.1
+  device: "cuda"  # 或者 "cpu"
+
+# 特征配置
+features:
+  categorical_features:
+    - device_model
+    - os_version
+    - country
+    - carrier
+  numerical_features:
+    - boot_time
+    - battery_level
+    - screen_time
+    - app_usage_count
+    - network_latency
+  boolean_features:
+    - is_jailbroken
+    - is_rooted
+    - has_vpn
+    - is_emulator
+
+# 数据配置
+data:
+  val_size: 0.2
+  num_workers: 4
